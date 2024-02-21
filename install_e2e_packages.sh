@@ -178,5 +178,6 @@ if [ "${TORCHBENCH}" = "true" ]; then
 
   # git checkout ${TORCH_BENCH_PIN_COMMIT}
   cd benchmark
+  python install.py
   pip install -e .
 fi
