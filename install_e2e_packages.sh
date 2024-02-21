@@ -7,15 +7,15 @@
 
 # Usage:  You need to set ENV_NAME explicitly BEFORE calling the script
 #               ENV_NAME='triton'
-#               [HUGGINGFACE=true|false] 
-#               [TIMM_MODELS=true|false] 
-#               [TORCHBENCH=true|false] 
-#               [HUGGINGFACE_PIN_COMMIT=commit_hash] 
-#               [TIMM_MODELS_PIN_COMMIT=commit_hash] 
-#               [TORCH_VISION_PIN_COMMIT=commit_hash] 
-#               [TORCH_AUDIO_PIN_COMMIT=commit_hash] 
-#               [TORCH_TEXT_PIN_COMMIT=commit_hash] 
-#               [TORCH_DATA_PIN_COMMIT=commit_hash] 
+#               [HUGGINGFACE=true|false]
+#               [TIMM_MODELS=true|false]
+#               [TORCHBENCH=true|false]
+#               [HUGGINGFACE_PIN_COMMIT=commit_hash]
+#               [TIMM_MODELS_PIN_COMMIT=commit_hash]
+#               [TORCH_VISION_PIN_COMMIT=commit_hash]
+#               [TORCH_AUDIO_PIN_COMMIT=commit_hash]
+#               [TORCH_TEXT_PIN_COMMIT=commit_hash]
+#               [TORCH_DATA_PIN_COMMIT=commit_hash]
 #               [TORCH_BENCH_PIN_COMMIT=commit_hash]
 #               bash install_e2e_packages.sh
 
