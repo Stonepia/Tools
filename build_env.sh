@@ -5,7 +5,7 @@
 # It also clones the PyTorch, IPEX, and Triton projects from specific branches, and installs them from source
 
 # Usage: You need to set ENV_NAME explicitly BEFORE calling the script
-#   ENV_NAME='triton' bash install_e2e_packages.sh
+#   ENV_NAME='triton' bash build_env.sh
 
 # exit if any command fails
 set -e
