@@ -36,7 +36,6 @@ if [ -z "$ENV_NAME" ]; then
 fi
 
 BASE=$(cd $(dirname "$0")/.. && pwd)
-echo Base is set as ${BASE}
 
 PYTORCH_PROJ=$BASE/pytorch
 DEPS_FOLDER=$BASE/deps
@@ -44,6 +43,16 @@ DEPS_FOLDER=$BASE/deps
 if [ ! -d "${DEPS_FOLDER}" ]; then
   mkdir ${DEPS_FOLDER}
 fi
+
+echo "==============================="
+echo "ENV_NAME: ${ENV_NAME}"
+echo "BASE : ${BASE}"
+echo "DEPS_FOLDER : ${DEPS_FOLDER}"
+
+echo "HUGGINGFACE : ${HUGGINGFACE}"
+echo "TIMM_MODELS : ${TIMM_MODELS}"
+echo "TORCHBENCH : ${TORCHBENCH}"
+echo "==============================="
 
 # Activate conda environment
 eval "$(conda shell.bash hook)"
@@ -77,6 +86,7 @@ TORCH_DATA_PIN_COMMIT=${TORCH_DATA_PIN_COMMIT:-$(get_pinned_commit data)}
 TORCH_BENCH_PIN_COMMIT=${TORCH_BENCH_PIN_COMMIT:-$(get_pinned_commit torchbench)}
 
 # Print the pinned commit variables
+echo "==============================="
 echo "HUGGINGFACE_PIN_COMMIT: $HUGGINGFACE_PIN_COMMIT"
 echo "TIMM_MODELS_PIN_COMMIT: $TIMM_MODELS_PIN_COMMIT"
 echo "TORCH_VISION_PIN_COMMIT: $TORCH_VISION_PIN_COMMIT"
@@ -84,6 +94,7 @@ echo "TORCH_AUDIO_PIN_COMMIT: $TORCH_AUDIO_PIN_COMMIT"
 echo "TORCH_TEXT_PIN_COMMIT: $TORCH_TEXT_PIN_COMMIT"
 echo "TORCH_DATA_PIN_COMMIT: $TORCH_DATA_PIN_COMMIT"
 echo "TORCH_BENCH_PIN_COMMIT: $TORCH_BENCH_PIN_COMMIT"
+echo "==============================="
 
 # Install the dependencies
 

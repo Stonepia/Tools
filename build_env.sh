@@ -22,6 +22,14 @@ if [ -z "$ENV_NAME" ]; then
   exit 1
 fi
 
+echo "==============================="
+echo "ENV_NAME: ${ENV_NAME}"
+echo "BASE : ${BASE}"
+echo "PYTORCH_PROJ : ${PYTORCH_PROJ}"
+echo "IPEX_PROJ : ${IPEX_PROJ}"
+echo "TRITON_PROJ : ${TRITON_PROJ}"
+echo "==============================="
+
 eval "$(conda shell.bash hook)"
 conda create --name ${ENV_NAME} python=3.10 -y
 conda activate ${ENV_NAME}
