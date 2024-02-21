@@ -40,7 +40,7 @@ if [ ! -d "$PYTORCH_PROJ" ]; then
 fi
 cd $PYTORCH_PROJ
 conda install cmake ninja -y
-conda install conda install intel::mkl-static intel::mkl-include -y
+conda install intel::mkl-static intel::mkl-include -y
 conda install -c conda-forge libstdcxx-ng -y
 pip install pyyaml
 pip install -r requirements.txt
