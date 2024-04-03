@@ -160,4 +160,6 @@ cython_debug/
 #.idea/
 
 
-kernel_extraction/kernel_extraction/
+kernel_extraction/kernel_extraction/ipex2.1/kernels/
+# kernel_extraction/kernel_extraction/ipex2.1/kernels/
+

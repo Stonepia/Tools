@@ -29,12 +29,11 @@ The `extract_kernel.py` contains three functions. Please see the docs in code fo
 
 - `extract_output_code(debug_dir, output_code_dir)` : This function will extract all `output_code.py` to output_code_dir and rename it with model name.
 - `extract_all_kernels(output_code_dir, kernel_dir)` : This will extract all triton kernels out to `kernel_dir`.
-- `randomly_projection_files(n, kernel_dir, projection_dir, long_kernel_portion=0.8, long_kernel_pool_portion=0.3)`.
-   
-    Randomly selects and copies a specified number of kernel files from the kernel directory to the projection directory.
-    Let's say there are 10,000 kernels in total, we would like to select 100 kernels from them.
-    The long_kernel_portion=0.8, so 100*0.8=80 long kernels will be selected from 10,000 * 0.3 = 3,000 long kernels.
-    The remaining 20 kernels will be randomly selected from the rest of the kernels.
+- `randomly_projection_files(n, kernel_dir, projection_dir, long_kernel_portion=0.8, long_kernel_pool_portion=0.3)`: Randomly selects and copies a specified number of kernel files from the kernel directory to the projection directory based on the log10 hist.
+
+A sample would be like below:
+
+![hist](./kernel_extraction/ipex2.1/histogram.png)
 
 
 # `kernel_extraction` Folder Structure

@@ -91,21 +91,18 @@ def extract_all_kernels(output_code_dir, kernel_dir):
     return total_count
 
 
-def randomly_projection_files(n, kernel_dir, projection_dir, allow_duplicates=False, long_kernel_portion=0.8, long_kernel_pool_portion=0.3, remove_old_dir=True):
+import matplotlib.pyplot as plt
+import numpy as np
+
+def randomly_projection_files(n, kernel_dir, projection_dir, remove_old_dir=True):
     """
-    Randomly selects and copies a specified number of kernel files from the kernel directory to the projection directory.
-    Let's say there are 10,000 kernels in total, we would like to select 100 kernels from them.
-    The long_kernel_portion=0.8, so 100*0.8=80 long kernels will be selected from 10,000 * 0.3 = 3,000 long kernels.
-    The remaining 20 kernels will be randomly selected from the rest of the kernels.
+    Randomly selects and copies a specified number of kernel files from the kernel directory to the projection directory based on the log10 hist.
 
     Args:
         n (int): Number of files to randomly select.
         kernel_dir (str): Path to the kernel directory.
         projection_dir (str): Path to the projection directory.
-        allow_duplicates (bool): Flag to allow duplicated files. Default is False.
-        long_kernel_portion (float): Portion of long kernel files to select. Default is 0.8.
-        long_kernel_pool_portion (float): Portion of long kernel pool to consider. Default is 0.5.
-        remove_old (bool): Flag to remove the existing projection directory. Default is True.
+        remove_old_dir (bool, optional): Flag to remove the existing projection directory. Default is True.
 
     Returns:
         None
@@ -114,46 +111,36 @@ def randomly_projection_files(n, kernel_dir, projection_dir, allow_duplicates=Fa
         shutil.rmtree(projection_dir)
     os.makedirs(projection_dir)
     kernel_files = os.listdir(kernel_dir)
-    if not allow_duplicates:
-        kernel_files = remove_duplicates(kernel_files, kernel_dir)
     total_files = len(kernel_files)
-    long_kernel_pool_size = int(total_files * long_kernel_pool_portion)
-    long_kernel_files = sorted(kernel_files, key=lambda f: os.path.getsize(os.path.join(kernel_dir, f)), reverse=True)[:long_kernel_pool_size]
-    long_kernel_count = int(n * long_kernel_portion)
-    random_files = random.sample(long_kernel_files, long_kernel_count)
-    remaining_count = n - long_kernel_count
-    random_files += random.sample(kernel_files, remaining_count)
-    for file_name in random_files:
-        source_file = os.path.join(kernel_dir, file_name)
-        destination_file = os.path.join(projection_dir, file_name)
-        shutil.copyfile(source_file, destination_file)
-    print(f'{len(random_files)} files randomly picked')
-    print(f'Output projected folder to {projection_dir}')
-
-def remove_duplicates(kernel_files, kernel_dir):
-    """
-    Removes duplicated files from the kernel directory based on file size.
-
-    Args:
-        kernel_files (list): List of kernel file names.
-        kernel_dir (str): Path to the kernel directory.
-
-    Returns:
-        list: List of kernel file names without duplicates.
-    """
-    file_sizes = {}
+    file_sizes = []
     for file_name in kernel_files:
         file_path = os.path.join(kernel_dir, file_name)
         file_size = os.path.getsize(file_path)
-        if file_size in file_sizes:
-            file_sizes[file_size].append(file_name)
-        else:
-            file_sizes[file_size] = [file_name]
-    unique_files = []
-    for size, files in file_sizes.items():
-        if len(files) == 1:
-            unique_files.append(files[0])
-    return unique_files
+        file_sizes.append(file_size)
+    plt.hist(np.log10(file_sizes), bins=30)
+    plt.xlabel('Logarithm of File Size')
+    plt.ylabel('Frequency')
+    plt.title('Histogram of Logarithm of File Sizes')
+    hist, bin_edges = np.histogram(np.log10(file_sizes), bins=30)
+    bin_weights = hist / np.sum(hist)
+    selected_files = []
+    for i in range(len(bin_edges) - 1):
+        lower_bound = bin_edges[i]
+        upper_bound = bin_edges[i + 1]
+        files_in_range = [file for file in kernel_files if lower_bound <= np.log10(os.path.getsize(os.path.join(kernel_dir, file))) < upper_bound]
+        num_files_in_range = int(n * bin_weights[i])
+        if len(files_in_range) > 0:
+            selected_files += random.sample(files_in_range, max(num_files_in_range, 1))
+            print(f"Log10 range [{lower_bound:.1f}, {upper_bound:.1f}] files_in_range: {len(files_in_range)}, num_files selected: {max(num_files_in_range, 1)}")
+
+    for file_name in selected_files:
+        source_file = os.path.join(kernel_dir, file_name)
+        destination_file = os.path.join(projection_dir, file_name)
+        shutil.copyfile(source_file, destination_file)
+    plt.text(0.5, 0.5, f'{len(selected_files)} files randomly picked from {total_files} files.', horizontalalignment='center', verticalalignment='center', transform=plt.gca().transAxes)
+    plt.savefig('histogram.png')
+    print(f'{len(selected_files)} files randomly picked from {total_files} files.')
+    print(f'Output projected folder to {projection_dir}')
 
 
 # NOTE : Please change these things according to your directory structure
