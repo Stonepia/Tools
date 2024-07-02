@@ -171,9 +171,8 @@ if [ "${TORCHBENCH}" = "true" ]; then
   conda install -y git-lfs pyyaml pandas scipy psutil
   pip install pyre_extensions
   pip install torchrec
-  # TODO : We use a temporary private repo. Thus we don't checkout commit.
   if [ ! -d "${DEPS_FOLDER}/benchmark" ]; then
-    git clone --recursive https://github.com/weishi-deng/benchmark
+    git clone --recursive https://github.com/pytorch/benchmark torchbenchmark
   fi
 
   # git checkout ${TORCH_BENCH_PIN_COMMIT}
